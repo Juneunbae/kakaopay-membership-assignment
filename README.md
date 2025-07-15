@@ -9,6 +9,9 @@
 |Swagger|2.2.0|
 |Flyway||
 
+## ERD
+<img width="1223" height="577" alt="image" src="https://github.com/user-attachments/assets/9536fff4-ea3d-4547-b4ef-d0811dd5ff25" />
+
 ## 정보
 ### 📌 API 문서 (Swagger)
 
