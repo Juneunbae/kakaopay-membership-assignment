@@ -1,4 +1,4 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.presentation.config;
+package com.assignment.kakaopay.kakaopaymembershipassignment.presentation.config.swagger;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;

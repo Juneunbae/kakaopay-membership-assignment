@@ -1,4 +1,4 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.config;
+package com.assignment.kakaopay.kakaopaymembershipassignment.config.redis;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
