@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ErrorCode {
-	NOT_FOUND("0-001", "존재하지 않는 정보입니다.", HttpStatus.NOT_FOUND);
+public enum MemberErrorCode implements BaseErrorCode {
+	ALREADY_EXISTS("M-001", "이미 존재하는 아이디입니다.", HttpStatus.ALREADY_REPORTED);
 
 	private final String errorCode;
 	private final String message;

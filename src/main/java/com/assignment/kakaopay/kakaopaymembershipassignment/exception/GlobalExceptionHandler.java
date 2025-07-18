@@ -12,8 +12,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(GlobalException.class)
 	public ResponseEntity<?> globalExceptionHandle(GlobalException ex) {
 		return ResponseEntity
-			.status(ex.getErrorCode().getStatus())
-			.body(ErrorMessage.of(ex.getErrorCode().toString(), ex.getMessage()));
+			.status(ex.getBaseErrorCode().getStatus())
+			.body(ErrorMessage.of(ex.getBaseErrorCode().toString(), ex.getMessage()));
 	}
 
 	@Getter
