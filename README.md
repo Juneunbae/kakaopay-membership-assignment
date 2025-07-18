@@ -4,9 +4,10 @@
 |SKILL|VERSION|
 |--|--|
 |Java|21|
-|SpringBoot|3.5.3|
+|SpringBoot|3.2.5|
 |MySQL|8.4.4|
 |Swagger|2.2.0|
+|Redis||
 |Flyway||
 
 ## ERD
