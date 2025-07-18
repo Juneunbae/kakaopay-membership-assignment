@@ -1,4 +1,4 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.domain;
+package com.assignment.kakaopay.kakaopaymembershipassignment.domain.member;
 
 import java.time.LocalDateTime;
 
@@ -45,7 +45,6 @@ public class Member {
 	private String username;
 
 	@Column(
-		nullable = false,
 		unique = true,
 		length = 10
 	)
