@@ -6,11 +6,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.IssueBarcodeRequestServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.MemberCreateRequestServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.IssueBarcodeResponseServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.MemberCreateResponseServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.MemberService;
 import com.assignment.kakaopay.kakaopaymembershipassignment.presentation.dto.mapper.MemberPresentationMapper;
+import com.assignment.kakaopay.kakaopaymembershipassignment.presentation.dto.request.IssueBarcodeRequestDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.presentation.dto.request.MemberCreateRequestDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.presentation.dto.response.IssueBarcodeResponseDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.presentation.dto.response.MemberCreateResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +40,22 @@ public class MemberController {
 
 		MemberCreateResponseDto responseDto = mapper.toMemberCreateResponseDto(
 			serviceResponse.userId(), serviceResponse.username()
+		);
+
+		return ResponseEntity.ok(responseDto);
+	}
+
+	@Operation(summary = "통합 바코드 발급하기", description = "가입된 유저들에게 통합 바코드 발급하는 API")
+	@PostMapping("/issues/barcode")
+	public ResponseEntity<IssueBarcodeResponseDto> issueBarcode(@RequestBody IssueBarcodeRequestDto request) {
+		IssueBarcodeRequestServiceDto serviceDto = mapper.toIssueBarcodeRequestServiceDto(
+			request.userId()
+		);
+
+		IssueBarcodeResponseServiceDto serviceResponse = memberService.issueBarcode(serviceDto);
+
+		IssueBarcodeResponseDto responseDto = mapper.toIssueBarcodeResponseDto(
+			serviceResponse.id(), serviceResponse.userId(), serviceResponse.username(), serviceResponse.barcode()
 		);
 
 		return ResponseEntity.ok(responseDto);

@@ -53,4 +53,8 @@ public class Member {
 	@CreatedDate
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createdAt;
+
+	public void issueBarcode(String barcode) {
+		this.barcode = barcode;
+	}
 }
