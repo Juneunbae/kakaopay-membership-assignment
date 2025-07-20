@@ -25,6 +25,7 @@
         </encoder>
     </appender>
 
+    <logger name="com.assignment.kakaopay.kakaopaymembershipassignment" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="FILE"/>

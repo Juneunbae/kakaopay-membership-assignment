@@ -6,11 +6,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(GlobalException.class)
 	public ResponseEntity<?> globalExceptionHandle(GlobalException ex) {
+		log.error("[GlobalException] {} - {}", ex.getBaseErrorCode().toString(), ex.getMessage());
+
 		return ResponseEntity
 			.status(ex.getBaseErrorCode().getStatus())
 			.body(ErrorMessage.of(ex.getBaseErrorCode().toString(), ex.getMessage()));
