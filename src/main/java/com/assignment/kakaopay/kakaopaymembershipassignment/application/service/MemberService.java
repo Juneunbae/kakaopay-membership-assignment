@@ -59,4 +59,8 @@ public class MemberService {
 			member.getId(), member.getUserId(), member.getUsername(), barcode
 		);
 	}
+
+	public Boolean existsByBarcode(String barcode) {
+		return memberRepository.existsByBarcode(barcode);
+	}
 }
