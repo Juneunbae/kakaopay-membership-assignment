@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.Member;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.GlobalException;
-import com.assignment.kakaopay.kakaopaymembershipassignment.exception.MemberErrorCode;
-import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.MemberRepository;
+import com.assignment.kakaopay.kakaopaymembershipassignment.exception.member.MemberErrorCode;
+import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

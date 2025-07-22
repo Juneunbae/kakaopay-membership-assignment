@@ -16,19 +16,19 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.mapper.MemberApplicationMapper;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.IssueBarcodeRequestServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.MemberCreateRequestServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.IssueBarcodeResponseServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.MemberCreateResponseServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.MemberService;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.mapper.member.MemberApplicationMapper;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.member.IssueBarcodeRequestServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.member.MemberCreateRequestServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.member.IssueBarcodeResponseServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.member.MemberCreateResponseServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.member.MemberService;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.Member;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.generator.UserIdGenerator;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.BarcodeIssuer;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.MemberCreator;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.GlobalException;
-import com.assignment.kakaopay.kakaopaymembershipassignment.exception.MemberErrorCode;
-import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.MemberRepository;
+import com.assignment.kakaopay.kakaopaymembershipassignment.exception.member.MemberErrorCode;
+import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.member.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {

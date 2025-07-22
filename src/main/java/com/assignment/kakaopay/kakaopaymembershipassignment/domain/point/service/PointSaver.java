@@ -2,7 +2,7 @@ package com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.servic
 
 import org.springframework.stereotype.Service;
 
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.RewardPointRequestServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.point.RewardPointRequestServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Point;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.store.Store;
 

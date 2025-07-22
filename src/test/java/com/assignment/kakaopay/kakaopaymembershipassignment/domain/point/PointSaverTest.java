@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.RewardPointRequestServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.point.RewardPointRequestServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.category.Category;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.service.PointSaver;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.store.Store;

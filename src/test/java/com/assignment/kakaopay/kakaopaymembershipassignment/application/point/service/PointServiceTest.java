@@ -12,20 +12,20 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.mapper.PointApplicationMapper;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.RewardPointRequestServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.RewardPointResponseServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.MemberService;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.PointService;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.StoreService;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.mapper.point.PointApplicationMapper;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.point.RewardPointRequestServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.point.RewardPointResponseServiceDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.member.MemberService;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.point.PointService;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.store.StoreService;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.category.Category;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Point;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.service.PointSaver;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.store.Store;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.GlobalException;
-import com.assignment.kakaopay.kakaopaymembershipassignment.exception.MemberErrorCode;
-import com.assignment.kakaopay.kakaopaymembershipassignment.exception.StoreErrorCode;
-import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.PointRepository;
+import com.assignment.kakaopay.kakaopaymembershipassignment.exception.member.MemberErrorCode;
+import com.assignment.kakaopay.kakaopaymembershipassignment.exception.store.StoreErrorCode;
+import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.point.PointRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class PointServiceTest {
