@@ -1,0 +1,1 @@
+drop table k_store_category;
