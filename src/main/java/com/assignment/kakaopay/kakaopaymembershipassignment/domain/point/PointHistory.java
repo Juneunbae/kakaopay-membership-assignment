@@ -1,16 +1,18 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.domain;
+package com.assignment.kakaopay.kakaopaymembershipassignment.domain.point;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
+
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.category.Category;
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.store.Store;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,35 +30,38 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "k_store")
+@Table(name = "k_point_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store {
+public class PointHistory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "store_category_id", nullable = false)
-	private StoreCategory category;
+	@Column(
+		nullable = false,
+		length = 10
+	)
+	private String barcode;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Category category;
+
+	private Integer point;
 
 	@Column(
 		nullable = false,
-		length = 50
+		length = 5
 	)
-	private String name;
+	private Action action;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "store_id", nullable = false)
+	private Store store;
+
+	@CreatedDate
 	@Column(
 		nullable = false
 	)
-	@CreatedDate
 	private LocalDateTime createdAt;
-
-	@CreatedBy
-	private Long createdBy;
-
-	@LastModifiedDate
-	private LocalDateTime updatedAt;
-
-	@LastModifiedBy
-	private Long updatedBy;
 }

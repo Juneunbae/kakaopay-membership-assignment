@@ -1,4 +1,4 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.domain;
+package com.assignment.kakaopay.kakaopaymembershipassignment.domain.store;
 
 import java.time.LocalDateTime;
 
@@ -9,8 +9,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.category.Category;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,12 +29,16 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "k_store_category")
+@Table(name = "k_store")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class StoreCategory {
+public class Store {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	@Column(
 		nullable = false,
