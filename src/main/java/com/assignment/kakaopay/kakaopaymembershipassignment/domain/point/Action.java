@@ -1,4 +1,4 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.domain;
+package com.assignment.kakaopay.kakaopaymembershipassignment.domain.point;
 
 import lombok.Getter;
 
