@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum Action {
-	ADD("적립"),
-	USE("사용");
+	USE("사용"),
+	REWARD("적립");
 
 	private final String description;
 

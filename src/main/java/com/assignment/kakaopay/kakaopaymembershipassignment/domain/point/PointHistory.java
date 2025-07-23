@@ -45,10 +45,13 @@ public class PointHistory {
 
 	private Integer point;
 
+	private Integer totalPoint;
+
 	@Column(
 		nullable = false,
 		length = 5
 	)
+	@Enumerated(EnumType.STRING)
 	private Action action;
 
 	private Long storeId;

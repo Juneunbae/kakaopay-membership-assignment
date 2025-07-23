@@ -1,12 +1,14 @@
 package com.assignment.kakaopay.kakaopaymembershipassignment.application.service.point;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.mapper.point.PointApplicationMapper;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.point.RewardPointRequestServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.point.RewardPointResponseServiceDto;
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.store.StoreService;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.event.PointEvent;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.member.MemberService;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.store.StoreService;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Point;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.service.PointSaver;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.store.Store;
@@ -27,6 +29,7 @@ public class PointService {
 	private final MemberService memberService;
 	private final PointRepository pointRepository;
 	private final PointApplicationMapper mapper;
+	private final ApplicationEventPublisher publisher;
 
 	@Transactional
 	public RewardPointResponseServiceDto rewardPoint(RewardPointRequestServiceDto request) {
@@ -40,6 +43,8 @@ public class PointService {
 
 		Point rewardPoint = pointSaver.reward(request, point, store);
 		pointRepository.save(rewardPoint);
+
+		publisher.publishEvent(new PointEvent(rewardPoint, request.rewardPoint(), store.getId()));
 
 		return mapper.toRewardPointResponseServiceDto(
 			request.barcode(), request.rewardPoint(), rewardPoint.getPoint()
