@@ -60,7 +60,9 @@ public class MemberService {
 		);
 	}
 
-	public Boolean existsByBarcode(String barcode) {
-		return memberRepository.existsByBarcode(barcode);
+	public void existsByBarcode(String barcode) {
+		if (!memberRepository.existsByBarcode(barcode)) {
+			throw new GlobalException(MemberErrorCode.NOT_FOUND);
+		}
 	}
 }
