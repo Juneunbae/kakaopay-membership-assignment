@@ -13,21 +13,27 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 	@ExceptionHandler(GlobalException.class)
 	public ResponseEntity<?> globalExceptionHandle(GlobalException ex) {
-		log.error("[GlobalException] {} - {}", ex.getBaseErrorCode().toString(), ex.getMessage());
+		log.error("[GlobalException] {} - {}", ex.getBaseErrorCode().getStatus().value(), ex.getMessage());
 
 		return ResponseEntity
 			.status(ex.getBaseErrorCode().getStatus())
-			.body(ErrorMessage.of(ex.getBaseErrorCode().toString(), ex.getMessage()));
+			.body(ErrorMessage.of(
+					ex.getBaseErrorCode().getErrorCode(),
+					ex.getBaseErrorCode().getStatus().value(),
+					ex.getBaseErrorCode().getMessage()
+				)
+			);
 	}
 
 	@Getter
 	@AllArgsConstructor
 	public static class ErrorMessage {
 		String errorCode;
+		Integer status;
 		String message;
 
-		public static ErrorMessage of(String message, String errorCode) {
-			return new ErrorMessage(errorCode, message);
+		public static ErrorMessage of(String errorCode, Integer statusCode, String message) {
+			return new ErrorMessage(errorCode, statusCode, message);
 		}
 	}
 }
