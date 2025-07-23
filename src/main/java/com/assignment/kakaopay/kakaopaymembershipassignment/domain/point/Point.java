@@ -44,7 +44,7 @@ public class Point {
 	@Enumerated(EnumType.STRING)
 	private Category category;
 
-	private Integer point = 0;
+	private Integer point;
 
 	@Column(
 		nullable = false

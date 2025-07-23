@@ -22,10 +22,10 @@ public class PointEventHandler {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
-	public void saveRewardPointHistory(PointEvent pointEvent) {
-		Point point = pointEvent.point();
-		Integer rewardPoint = pointEvent.pointAmount();
-		Long storeId = pointEvent.storeId();
+	public void saveRewardPointHistory(RewardPointEvent rewardPointEvent) {
+		Point point = rewardPointEvent.point();
+		Integer rewardPoint = rewardPointEvent.pointAmount();
+		Long storeId = rewardPointEvent.storeId();
 
 		PointHistory pointHistory = PointHistory.builder()
 			.barcode(point.getBarcode())
@@ -38,5 +38,25 @@ public class PointEventHandler {
 
 		pointHistoryRepository.save(pointHistory);
 		log.debug("포인트 적립 내역 저장 성공");
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+	public void saveUsePointHistory(UsePointEvent usePointEvent) {
+		Point point = usePointEvent.point();
+		Integer usePoint = usePointEvent.pointAmount();
+		Long storeId = usePointEvent.storeId();
+
+		PointHistory pointHistory = PointHistory.builder()
+			.barcode(point.getBarcode())
+			.category(point.getCategory())
+			.point(usePoint)
+			.totalPoint(point.getPoint())
+			.action(Action.USE)
+			.storeId(storeId)
+			.build();
+
+		pointHistoryRepository.save(pointHistory);
+		log.debug("포인트 사용 내역 저장 성공");
 	}
 }

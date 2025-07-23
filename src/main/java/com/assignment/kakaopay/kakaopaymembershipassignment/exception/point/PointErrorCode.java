@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PointErrorCode implements BaseErrorCode {
-	;
+	NOT_ENOUGH_POINT("P-001", "사용 가능한 포인트가 부족합니다.", HttpStatus.BAD_REQUEST);
 
 	private final String errorCode;
 	private final String message;
