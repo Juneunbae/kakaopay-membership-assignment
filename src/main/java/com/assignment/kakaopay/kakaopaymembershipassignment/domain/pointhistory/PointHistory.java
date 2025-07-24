@@ -1,4 +1,4 @@
-package com.assignment.kakaopay.kakaopaymembershipassignment.domain.point;
+package com.assignment.kakaopay.kakaopaymembershipassignment.domain.pointhistory;
 
 import java.time.LocalDateTime;
 
@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.category.Category;
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Action;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
