@@ -8,7 +8,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Action;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Point;
-import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.PointHistory;
+
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.pointhistory.PointHistory;
 import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.pointhistory.PointHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
