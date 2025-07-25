@@ -40,10 +40,6 @@ public class PointHistory {
 	)
 	private String barcode;
 
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Category category;
-
 	private Integer point;
 
 	private Integer totalPoint;
@@ -56,6 +52,16 @@ public class PointHistory {
 	private Action action;
 
 	private Long storeId;
+
+	@Column(
+		nullable = false,
+		length = 50
+	)
+	private String storeName;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	@CreatedDate
 	@Column(
