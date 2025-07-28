@@ -25,6 +25,7 @@ import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.Member;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.generator.UserIdGenerator;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.BarcodeIssuer;
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.BarcodeToRedisSaver;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.MemberCreator;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.GlobalException;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.member.MemberErrorCode;
@@ -44,6 +45,9 @@ public class MemberServiceTest {
 	@Mock
 	private BarcodeIssuer barcodeIssuer;
 
+	@Mock
+	private BarcodeToRedisSaver barcodeToRedisSaver;
+
 	@InjectMocks
 	private MemberService memberService;
 
@@ -52,7 +56,8 @@ public class MemberServiceTest {
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
-		memberService = new MemberService(barcodeIssuer, memberCreator, userIdGenerator, memberRepository, mapper);
+		memberService = new MemberService(barcodeIssuer, memberCreator, userIdGenerator, memberRepository, mapper,
+			barcodeToRedisSaver);
 	}
 
 	@Test
@@ -158,6 +163,7 @@ public class MemberServiceTest {
 		verify(memberRepository).findByUserId(userId);
 		verify(barcodeIssuer).issue(member);
 		verify(memberRepository).save(member);
+		verify(barcodeToRedisSaver).save(barcode, memberId);
 		verify(mapper).toIssueBarcodeResponseServiceDto(memberId, userId, username, barcode);
 	}
 
