@@ -69,4 +69,9 @@ public class MemberService {
 			throw new GlobalException(MemberErrorCode.NOT_FOUND);
 		}
 	}
+
+	public Member findByBarcode(String barcode) {
+		return memberRepository.findByBarcode(barcode)
+			.orElseThrow(() -> new GlobalException(MemberErrorCode.NOT_FOUND));
+	}
 }

@@ -1,8 +1,10 @@
 package com.assignment.kakaopay.kakaopaymembershipassignment.application.service.point;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.cache.BarcodeRedisValueDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.mapper.point.PointApplicationMapper;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.point.RewardPointRequestServiceDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.request.point.UsePointRequestServiceDto;
@@ -13,6 +15,8 @@ import com.assignment.kakaopay.kakaopaymembershipassignment.application.event.Us
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.member.MemberService;
 import com.assignment.kakaopay.kakaopaymembershipassignment.application.service.store.StoreService;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.category.Category;
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.Member;
+import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.BarcodeToRedisSaver;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.Point;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.service.PointConsumer;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.point.service.PointSaver;
@@ -20,6 +24,7 @@ import com.assignment.kakaopay.kakaopaymembershipassignment.domain.store.Store;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.GlobalException;
 import com.assignment.kakaopay.kakaopaymembershipassignment.exception.point.PointErrorCode;
 import com.assignment.kakaopay.kakaopaymembershipassignment.infrastructure.point.PointRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +36,29 @@ import lombok.extern.slf4j.Slf4j;
 public class PointService {
 	private final PointSaver pointSaver;
 	private final StoreService storeService;
+	private final ObjectMapper objectMapper;
 	private final MemberService memberService;
 	private final PointConsumer pointConsumer;
-	private final PointRepository pointRepository;
 	private final PointApplicationMapper mapper;
+	private final PointRepository pointRepository;
 	private final ApplicationEventPublisher publisher;
+	private final BarcodeToRedisSaver barcodeToRedisSaver;
+	private final RedisTemplate<String, Object> redisTemplate;
 
 	@Transactional
 	public RewardPointResponseServiceDto rewardPoint(RewardPointRequestServiceDto request) {
-		memberService.existsByBarcode(request.barcode());
+		Object redisValue = redisTemplate.opsForValue().get("barcode:" + request.barcode());
+
+		if (redisValue == null) {
+			Member getMemberFromDB = memberService.findByBarcode(request.barcode());
+			barcodeToRedisSaver.save(getMemberFromDB.getBarcode(), getMemberFromDB.getId());
+			log.debug("바코드 : {} 캐싱 성공", getMemberFromDB.getBarcode());
+		} else {
+			BarcodeRedisValueDto barcodeRedisValueDto = objectMapper.convertValue(
+				redisValue, BarcodeRedisValueDto.class
+			);
+			log.debug("캐싱된 바코드 정보 : {} 가져오기 성공", barcodeRedisValueDto.barcode());
+		}
 
 		Store store = storeService.findById(request.storeId());
 

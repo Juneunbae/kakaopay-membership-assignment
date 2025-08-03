@@ -1,7 +1,5 @@
 package com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,11 +18,7 @@ public class BarcodeToRedisSaver {
 
 	public void save(String barcode, Long userId) {
 		String key = "barcode:" + barcode;
-		Map<String, Integer> categoryPoints = new HashMap<>();
-		categoryPoints.put("Food", 0);
-		categoryPoints.put("Restaurant", 0);
-		categoryPoints.put("Cosmetic", 0);
-		BarcodeRedisValueDto value = new BarcodeRedisValueDto(barcode, userId, categoryPoints);
+		BarcodeRedisValueDto value = new BarcodeRedisValueDto(barcode, userId);
 		redisTemplate.opsForValue().set(key, value, 5, TimeUnit.MINUTES);
 	}
 }

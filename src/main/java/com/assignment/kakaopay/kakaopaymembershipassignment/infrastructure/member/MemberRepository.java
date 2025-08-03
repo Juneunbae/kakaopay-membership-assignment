@@ -12,4 +12,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	Optional<Member> findByUserId(String userId);
 
 	Boolean existsByBarcode(String barcode);
+
+	Optional<Member> findByBarcode(String barcode);
 }
