@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.response.member.BarcodeRedisValueDto;
+import com.assignment.kakaopay.kakaopaymembershipassignment.application.dto.cache.BarcodeRedisValueDto;
 import com.assignment.kakaopay.kakaopaymembershipassignment.domain.member.service.BarcodeToRedisSaver;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +39,7 @@ public class BarcodeToRedisSaverTest {
 		// given
 		String barcode = "123456789";
 		Long userId = 1L;
-		BarcodeRedisValueDto expectedValue = new BarcodeRedisValueDto(barcode, userId, 0);
+		BarcodeRedisValueDto expectedValue = new BarcodeRedisValueDto(barcode, userId);
 
 		// when
 		when(redisTemplate.opsForValue()).thenReturn(valueOperations);
