@@ -1,4 +1,4 @@
-# 카카오페이 서버 개발과제 - 멤버십 서비스
+# 2022 카카오페이 서버 개발과제 - 멤버십 서비스
 
 ## 개발환경
 |SKILL|VERSION|
@@ -8,7 +8,7 @@
 |MapStruct|1.5.5|
 |MySQL|8.4.4|
 |Swagger|2.2.0|
-|Redis||
+|Redis|redis-stack-container (Docker)|
 |Redisson|3.23.2|
 |Flyway||
 
@@ -37,7 +37,7 @@ presentation
 ├── dto
 │   ├── request
 │   │   └── PresentationRequestDto.java
-│   └── response
+│   ├── response
 │       └── PresentationResponseDto.java
 │
 application
@@ -46,8 +46,10 @@ application
 ├── dto
 │   ├── request
 │   │   └── RewardPointRequestServiceDto.java
-│   └── response
-│       └── RewardPointResponseServiceDto.java
+│   ├── response
+│   │   └── RewardPointResponseServiceDto.java
+│   └── cache
+│       └── RedisDto.java
 ```
 #### 설계 목적
 |구분|목적|
