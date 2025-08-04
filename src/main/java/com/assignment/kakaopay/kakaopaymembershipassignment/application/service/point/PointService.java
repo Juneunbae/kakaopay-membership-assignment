@@ -1,5 +1,9 @@
 package com.assignment.kakaopay.kakaopaymembershipassignment.application.service.point;
 
+import java.util.concurrent.TimeUnit;
+
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,7 @@ public class PointService {
 	private final ObjectMapper objectMapper;
 	private final MemberService memberService;
 	private final PointConsumer pointConsumer;
+	private final RedissonClient redissonClient;
 	private final PointApplicationMapper mapper;
 	private final PointRepository pointRepository;
 	private final ApplicationEventPublisher publisher;
@@ -47,18 +52,7 @@ public class PointService {
 
 	@Transactional
 	public RewardPointResponseServiceDto rewardPoint(RewardPointRequestServiceDto request) {
-		Object redisValue = redisTemplate.opsForValue().get("barcode:" + request.barcode());
-
-		if (redisValue == null) {
-			Member getMemberFromDB = memberService.findByBarcode(request.barcode());
-			barcodeToRedisSaver.save(getMemberFromDB.getBarcode(), getMemberFromDB.getId());
-			log.debug("바코드 : {} 캐싱 성공", getMemberFromDB.getBarcode());
-		} else {
-			BarcodeRedisValueDto barcodeRedisValueDto = objectMapper.convertValue(
-				redisValue, BarcodeRedisValueDto.class
-			);
-			log.debug("캐싱된 바코드 정보 : {} 가져오기 성공", barcodeRedisValueDto.barcode());
-		}
+		this.getBarcodeFromRedis(request.barcode());
 
 		Store store = storeService.findById(request.storeId());
 
@@ -76,28 +70,58 @@ public class PointService {
 
 	@Transactional
 	public UsePointResponseServiceDto usePoint(UsePointRequestServiceDto request) {
-		memberService.existsByBarcode(request.barcode());
+		RLock lock = redissonClient.getLock("usePointBarcode:" + request.barcode());
 
-		Store store = storeService.findById(request.storeId());
+		try {
+			boolean isLocked = lock.tryLock(3, 5, TimeUnit.SECONDS);
+			if (!isLocked) {
+				throw new GlobalException(PointErrorCode.IN_USE_BARCODE);
+			}
 
-		Point point = this.findByBarcodeAndCategory(request.barcode(), store.getCategory());
+			this.getBarcodeFromRedis(request.barcode());
 
-		if (point == null)
-			throw new GlobalException(PointErrorCode.NOT_ENOUGH_POINT);
-		else if (point.getPoint() < request.usePoint())
-			throw new GlobalException(PointErrorCode.NOT_ENOUGH_POINT);
+			Store store = storeService.findById(request.storeId());
 
-		Point updatePoint = pointConsumer.use(point, request.usePoint());
-		pointRepository.save(updatePoint);
+			Point point = this.findByBarcodeAndCategory(request.barcode(), store.getCategory());
 
-		publisher.publishEvent(new UsePointEvent(updatePoint, request.usePoint(), store.getId()));
+			if (point == null)
+				throw new GlobalException(PointErrorCode.NOT_ENOUGH_POINT);
+			else if (point.getPoint() < request.usePoint())
+				throw new GlobalException(PointErrorCode.NOT_ENOUGH_POINT);
 
-		return mapper.toUsePointResponseServiceDto(
-			store.getId(), request.barcode(), request.usePoint(), updatePoint.getPoint()
-		);
+			Point updatePoint = pointConsumer.use(point, request.usePoint());
+			pointRepository.save(updatePoint);
+
+			publisher.publishEvent(new UsePointEvent(updatePoint, request.usePoint(), store.getId()));
+
+			return mapper.toUsePointResponseServiceDto(
+				store.getId(), request.barcode(), request.usePoint(), updatePoint.getPoint()
+			);
+		} catch (InterruptedException e) {
+			throw new RuntimeException("Lock 획득 중 인터럽트 에러 발생 : {}", e);
+		} finally {
+			if (lock.isLocked() && lock.isHeldByCurrentThread()) {
+				lock.unlock();
+			}
+		}
 	}
 
 	private Point findByBarcodeAndCategory(String barcode, Category category) {
 		return pointRepository.findByBarcodeAndCategory(barcode, category);
+	}
+
+	private void getBarcodeFromRedis(String barcode) {
+		Object redisValue = redisTemplate.opsForValue().get("barcode:" + barcode);
+
+		if (redisValue == null) {
+			Member getMemberFromDB = memberService.findByBarcode(barcode);
+			barcodeToRedisSaver.save(getMemberFromDB.getBarcode(), getMemberFromDB.getId());
+			log.debug("바코드 : {} 캐싱 성공", getMemberFromDB.getBarcode());
+		} else {
+			BarcodeRedisValueDto barcodeRedisValueDto = objectMapper.convertValue(
+				redisValue, BarcodeRedisValueDto.class
+			);
+			log.debug("캐싱된 바코드 정보 : {} 가져오기 성공", barcodeRedisValueDto.barcode());
+		}
 	}
 }
